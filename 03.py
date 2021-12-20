@@ -2,10 +2,10 @@
 
 from collections import Counter
 
-with open('./03.txt') as myinput:
-    inputlines = myinput.readlines()
+with open('./03.txt') as my_input:
+    input_lines = my_input.readlines()
 
-num_len = len(inputlines[0]) - 1
+num_len = len(input_lines[0]) - 1
 
 def find_most_common_bits(bit_position, report):
     nth_bits = []
@@ -13,28 +13,28 @@ def find_most_common_bits(bit_position, report):
         nth_bits.append(number[bit_position])
     return Counter(nth_bits).most_common()
 
-def get_new_candidates(bit_position, most_common_bit, candidates):
+def get_new_candidates(bit_position, next_bit, candidates):
     new_candidates = []
     for number in candidates:
-        if number[bit_position] == most_common_bit:
+        if number[bit_position] == next_bit:
             new_candidates.append(number)
     return new_candidates
 
 def get_ratings(gas):
-    candidates = [number for number in inputlines]
+    candidates = [number for number in input_lines]
     for bit_position in range(num_len):
         most_common, least_common = find_most_common_bits(bit_position, candidates)
         if most_common[1] == least_common[1]:
             if gas == 'o2':
-                most_common_bit = '1'
+                next_bit = '1'
             elif gas == 'co2':
-                most_common_bit = '0'
+                next_bit = '0'
         else:
             if gas == 'o2':
-                most_common_bit = most_common[0]
+                next_bit = most_common[0]
             elif gas == 'co2':
-                most_common_bit = least_common[0]
-        candidates = get_new_candidates(bit_position, most_common_bit, candidates)
+                next_bit = least_common[0]
+        candidates = get_new_candidates(bit_position, next_bit, candidates)
         if len(candidates) == 1:
             return candidates[0]
 
@@ -43,7 +43,7 @@ def get_ratings(gas):
 gamma_rate = ''
 epsilon_rate = ''
 for bit_position in range(num_len):
-    most_common, least_common = find_most_common_bits(bit_position, inputlines)
+    most_common, least_common = find_most_common_bits(bit_position, input_lines)
     gamma_rate += most_common[0]
     epsilon_rate += least_common[0]
 
